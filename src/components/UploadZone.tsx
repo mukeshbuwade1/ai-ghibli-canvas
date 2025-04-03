@@ -4,6 +4,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Image, Upload, Camera, FileImage } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import { useUser } from '@/components/UserProvider';
 
 interface UploadZoneProps {
   onImageUploaded: (file: File, previewUrl: string) => void;
@@ -13,6 +14,7 @@ const UploadZone = ({ onImageUploaded }: UploadZoneProps) => {
   const [isDragging, setIsDragging] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const { toast } = useToast();
+  const { user } = useUser();
 
   const handleDragEnter = useCallback((e: React.DragEvent) => {
     e.preventDefault();

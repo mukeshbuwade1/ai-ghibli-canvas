@@ -19,26 +19,32 @@ const STYLES: Style[] = [
   {
     id: 'totoro',
     name: 'My Neighbor Totoro',
-    thumbnail: 'https://i.imgur.com/WLXSvSB.jpeg', // Placeholder for now
+    thumbnail: 'https://i.imgur.com/WLXSvSB.jpeg',
     description: 'Soft, dreamlike forest landscapes with rounded characters'
   },
   {
     id: 'spirited',
     name: 'Spirited Away',
-    thumbnail: 'https://i.imgur.com/YUgJUeS.jpeg', // Placeholder for now
+    thumbnail: 'https://i.imgur.com/YUgJUeS.jpeg',
     description: 'Vibrant colors with ethereal spirits and detailed backgrounds'
   },
   {
     id: 'howl',
     name: "Howl's Moving Castle",
-    thumbnail: 'https://i.imgur.com/Y9mt8x3.jpeg', // Placeholder for now
+    thumbnail: 'https://i.imgur.com/Y9mt8x3.jpeg',
     description: 'Steampunk aesthetic with romantic, warm color palettes'
   },
   {
     id: 'mononoke',
     name: 'Princess Mononoke',
-    thumbnail: 'https://i.imgur.com/mdfpLWg.jpeg', // Placeholder for now
+    thumbnail: 'https://i.imgur.com/mdfpLWg.jpeg',
     description: 'Rich, natural tones with mystical forest elements'
+  },
+  {
+    id: 'highq_ghibli',
+    name: 'High Quality Ghibli',
+    thumbnail: 'https://i.imgur.com/d6TjuJi.jpeg',
+    description: 'Enhanced quality using specialized Ghibli model (may take longer)'
   }
 ];
 
@@ -52,7 +58,7 @@ const StylePicker = ({ selectedStyle, onStyleSelect }: StylePickerProps) => {
             key={style.id}
             onClick={() => onStyleSelect(style.id)}
             className={cn(
-              "ghibli-card cursor-pointer transition-all duration-300",
+              "ghibli-card cursor-pointer transition-all duration-300 relative border rounded-lg overflow-hidden",
               selectedStyle === style.id ? "ring-2 ring-primary scale-[1.02]" : "hover:scale-[1.01]"
             )}
           >
