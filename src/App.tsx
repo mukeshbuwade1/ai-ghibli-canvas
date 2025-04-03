@@ -12,7 +12,7 @@ import { Suspense, lazy } from "react";
 
 const queryClient = new QueryClient();
 
-// Protected route component
+// Protected route component - we only use this for pages that require authentication
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useUser();
   
@@ -39,14 +39,8 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route 
-              path="/" 
-              element={
-                <ProtectedRoute>
-                  <Index />
-                </ProtectedRoute>
-              } 
-            />
+            {/* Index page is now available to all users without authentication */}
+            <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

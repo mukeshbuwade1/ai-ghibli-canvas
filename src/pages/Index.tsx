@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import UploadZone from "@/components/UploadZone";
 import StylePicker from "@/components/StylePicker";
 import GenerateButton from "@/components/GenerateButton";
@@ -8,7 +9,7 @@ import { useUser } from "@/components/UserProvider";
 import { uploadImage, transformImage, checkTransformationStatus, getGenerationById } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { LogOut } from "lucide-react";
+import { LogOut, LogIn } from "lucide-react";
 
 export default function Index() {
   const [file, setFile] = useState<File | null>(null);
@@ -20,6 +21,7 @@ export default function Index() {
   const [generationId, setGenerationId] = useState<string | null>(null);
   const { toast } = useToast();
   const { user, signOut } = useUser();
+  const navigate = useNavigate();
 
   const handleImageUploaded = (file: File, url: string) => {
     setFile(file);
@@ -32,6 +34,17 @@ export default function Index() {
   };
 
   const handleGenerate = async () => {
+    // Check if user is logged in first
+    if (!user) {
+      toast({
+        title: "Authentication required",
+        description: "Please log in to transform images.",
+        variant: "destructive",
+      });
+      navigate("/auth");
+      return;
+    }
+
     if (!previewUrl || !selectedStyle) {
       toast({
         title: "Missing information",
@@ -102,17 +115,31 @@ export default function Index() {
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <h1 className="text-2xl font-bold text-primary">GhibliAI</h1>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-600">
-              {user?.email}
-            </span>
-            <Button 
-              variant="ghost" 
-              size="icon"
-              onClick={signOut}
-              title="Sign out"
-            >
-              <LogOut className="h-5 w-5" />
-            </Button>
+            {user ? (
+              <>
+                <span className="text-sm text-gray-600">
+                  {user.email}
+                </span>
+                <Button 
+                  variant="ghost" 
+                  size="icon"
+                  onClick={signOut}
+                  title="Sign out"
+                >
+                  <LogOut className="h-5 w-5" />
+                </Button>
+              </>
+            ) : (
+              <Button 
+                variant="outline"
+                size="sm"
+                onClick={() => navigate("/auth")}
+                className="flex items-center gap-2"
+              >
+                <LogIn className="h-4 w-4" />
+                Sign In
+              </Button>
+            )}
           </div>
         </div>
       </header>
@@ -166,6 +193,11 @@ export default function Index() {
                   onClick={handleGenerate}
                   isLoading={isTransforming}
                 />
+                {!user && (
+                  <p className="text-sm text-gray-500 mt-4">
+                    You'll need to sign in before generating images.
+                  </p>
+                )}
               </div>
             )}
           </div>
