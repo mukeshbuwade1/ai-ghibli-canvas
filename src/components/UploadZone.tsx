@@ -1,8 +1,9 @@
 
 import React, { useState, useCallback } from 'react';
 import { useToast } from '@/hooks/use-toast';
-import { Image, Upload } from 'lucide-react';
+import { Image, Upload, Camera, FileImage } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 
 interface UploadZoneProps {
   onImageUploaded: (file: File, previewUrl: string) => void;
@@ -80,7 +81,7 @@ const UploadZone = ({ onImageUploaded }: UploadZoneProps) => {
     <div className="w-full">
       <div 
         className={cn(
-          "w-full h-[400px] border-2 border-dashed rounded-lg flex flex-col items-center justify-center cursor-pointer transition-all p-4",
+          "w-full min-h-[400px] border-2 border-dashed rounded-lg flex flex-col items-center justify-center cursor-pointer transition-all p-6",
           isDragging ? "border-primary bg-primary/5" : "border-gray-300 hover:border-primary/50",
           previewUrl ? "bg-gray-50" : "bg-white"
         )}
@@ -88,36 +89,61 @@ const UploadZone = ({ onImageUploaded }: UploadZoneProps) => {
         onDragLeave={handleDragLeave}
         onDragOver={handleDragOver}
         onDrop={handleDrop}
-        onClick={() => document.getElementById('fileInput')?.click()}
       >
         {previewUrl ? (
-          <div className="relative w-full h-full">
-            <img 
-              src={previewUrl} 
-              alt="Preview" 
-              className="w-full h-full object-contain"
-            />
-            <div 
-              className="absolute inset-0 bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center text-white"
-            >
-              <p className="text-center font-medium">
-                Click or drop to change image
-              </p>
+          <div className="relative w-full h-full flex flex-col items-center">
+            <div className="relative w-full h-64 mb-6">
+              <img 
+                src={previewUrl} 
+                alt="Preview" 
+                className="w-full h-full object-contain"
+              />
+            </div>
+            <div className="flex gap-4 mt-4">
+              <Button 
+                variant="outline" 
+                onClick={() => document.getElementById('fileInput')?.click()}
+                className="flex items-center gap-2"
+              >
+                <FileImage className="w-4 h-4" />
+                Upload Another Image
+              </Button>
             </div>
           </div>
         ) : (
-          <>
-            <div className="mb-4 p-4 bg-gray-100 rounded-full">
+          <div className="flex flex-col items-center text-center max-w-md mx-auto">
+            <div className="mb-6 p-4 bg-primary/10 rounded-full">
               <Upload className="h-8 w-8 text-primary" />
             </div>
-            <h3 className="text-lg font-medium mb-2">Upload an image</h3>
-            <p className="text-gray-500 text-center max-w-sm mb-4">
-              Drag and drop your image here, or click to select a file
+            <h3 className="text-2xl font-bold mb-3">Transform your image to Ghibli style</h3>
+            <p className="text-gray-500 mb-8">
+              Upload an image or drag and drop it here
             </p>
-            <p className="text-xs text-gray-400">
+            
+            <div className="flex flex-col sm:flex-row gap-4 w-full max-w-sm">
+              <Button 
+                variant="outline" 
+                className="flex-1 flex items-center justify-center gap-2"
+                onClick={() => document.getElementById('fileInput')?.click()}
+              >
+                <FileImage className="w-4 h-4" />
+                Upload Image
+              </Button>
+              
+              <Button 
+                variant="outline" 
+                className="flex-1 flex items-center justify-center gap-2"
+                disabled
+              >
+                <Camera className="w-4 h-4" />
+                Take Photo
+              </Button>
+            </div>
+            
+            <p className="text-xs text-gray-400 mt-6">
               Supports: JPG, PNG, GIF (Max 5MB)
             </p>
-          </>
+          </div>
         )}
         <input 
           id="fileInput" 
