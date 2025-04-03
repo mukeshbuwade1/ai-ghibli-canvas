@@ -1,11 +1,13 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { Github } from 'lucide-react';
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 
 type AuthMode = 'signin' | 'signup' | 'forgotPassword';
 
@@ -14,11 +16,13 @@ export default function AuthUI() {
   const [password, setPassword] = useState('');
   const [authMode, setAuthMode] = useState<AuthMode>('signin');
   const [loading, setLoading] = useState(false);
+  const [providerError, setProviderError] = useState<string | null>(null);
   const { toast } = useToast();
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setProviderError(null);
 
     try {
       if (authMode === 'signin') {
@@ -68,37 +72,27 @@ export default function AuthUI() {
     }
   };
 
-  const handleGoogleSignIn = async () => {
+  const handleOAuthSignIn = async (provider: 'google' | 'github') => {
     try {
+      setProviderError(null);
       const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
+        provider,
         options: {
           redirectTo: window.location.origin
         }
       });
-      if (error) throw error;
-    } catch (error: any) {
-      toast({
-        title: "Google Sign In Error",
-        description: error.message || "An error occurred during Google sign in.",
-        variant: "destructive"
-      });
-    }
-  };
-
-  const handleGithubSignIn = async () => {
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'github',
-        options: {
-          redirectTo: window.location.origin
+      
+      if (error) {
+        if (error.message.includes('provider is not enabled')) {
+          setProviderError(`${provider.charAt(0).toUpperCase() + provider.slice(1)} login is not configured. Please use email/password authentication.`);
+        } else {
+          throw error;
         }
-      });
-      if (error) throw error;
+      }
     } catch (error: any) {
       toast({
-        title: "GitHub Sign In Error",
-        description: error.message || "An error occurred during GitHub sign in.",
+        title: `${provider.charAt(0).toUpperCase() + provider.slice(1)} Sign In Error`,
+        description: error.message || `An error occurred during ${provider} sign in.`,
         variant: "destructive"
       });
     }
@@ -119,11 +113,18 @@ export default function AuthUI() {
         </p>
       </div>
 
+      {providerError && (
+        <Alert variant="destructive" className="mb-6">
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>{providerError}</AlertDescription>
+        </Alert>
+      )}
+
       <div className="flex flex-col gap-4 mb-6">
         <Button 
           variant="outline" 
           className="flex items-center justify-center gap-2"
-          onClick={handleGoogleSignIn}
+          onClick={() => handleOAuthSignIn('google')}
         >
           <svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
             <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
@@ -136,7 +137,7 @@ export default function AuthUI() {
         <Button 
           variant="outline" 
           className="flex items-center justify-center gap-2"
-          onClick={handleGithubSignIn}
+          onClick={() => handleOAuthSignIn('github')}
         >
           <Github size={18} />
           Continue with GitHub
