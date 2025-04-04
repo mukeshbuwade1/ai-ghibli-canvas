@@ -34,7 +34,7 @@ export default function Auth() {
           Back to Home
         </Button>
         
-        <h1 className="text-center text-3xl font-extrabold text-gray-900">GhibliAI</h1>
+        <h1 className="text-center text-3xl font-extrabold text-gray-900">GhibliFy</h1>
         <h2 className="mt-2 text-center text-sm text-gray-600">
           Transform your images into Ghibli-style art
         </h2>

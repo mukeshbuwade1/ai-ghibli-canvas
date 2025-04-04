@@ -101,16 +101,6 @@ const UploadZone = ({ onImageUploaded }: UploadZoneProps) => {
                 className="w-full h-full object-contain"
               />
             </div>
-            <div className="flex gap-4 mt-4">
-              <Button 
-                variant="outline" 
-                onClick={() => document.getElementById('fileInput')?.click()}
-                className="flex items-center gap-2"
-              >
-                <FileImage className="w-4 h-4" />
-                Upload Another Image
-              </Button>
-            </div>
           </div>
         ) : (
           <div className="flex flex-col items-center text-center max-w-md mx-auto">
