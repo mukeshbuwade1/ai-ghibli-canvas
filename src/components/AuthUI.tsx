@@ -37,7 +37,7 @@ export default function AuthUI() {
           email,
           password,
           options: {
-            emailRedirectTo: window.location.origin,
+            emailRedirectTo:'http://localhost:3000' //"https://uelyqikobhjrosibqzxh.supabase.co/auth/v1/callback",
           }
         });
 
