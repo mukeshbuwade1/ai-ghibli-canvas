@@ -54,7 +54,7 @@ export const transformImage = async (imageUrl: string, style: string): Promise<{
       return null;
     }
     
-    const response = await fetch(`${window.location.origin}/functions/v1/ghiblify`, {
+    const response = await fetch(`https://uelyqikobhjrosibqzxh.supabase.co/functions/v1/ghiblify`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
