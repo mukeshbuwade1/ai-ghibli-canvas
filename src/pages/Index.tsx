@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import UploadZone from "@/components/UploadZone";
 import GenerateButton from "@/components/GenerateButton";
@@ -12,6 +11,7 @@ import Footer from "@/components/Footer";
 import GhibliRestyler from "@/components/Restyler";
 import FAQAccordion from "@/components/Faqs";
 import { useGenerateImage } from "@/hooks/useGenerateImage";
+import CorsTestButton from "@/components/CorsTestButton";
 
 export default function Index() {
   const [file, setFile] = useState<File | null>(null);
@@ -54,6 +54,10 @@ export default function Index() {
             Turn any image into beautiful Studio Ghibli-inspired artwork with
             our AI transformation tool.
           </p>
+          
+          <div className="my-6">
+            <CorsTestButton />
+          </div>
         </section>
 
         <div className="">
