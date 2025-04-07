@@ -1,4 +1,3 @@
-
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 
@@ -150,7 +149,6 @@ export const getUserGenerations = async (): Promise<Generation[]> => {
   }
 };
 
-// New function to test the CORS functionality
 export const testCors = async (testData: any): Promise<{ message: string; receivedData: any } | null> => {
   try {
     const { data, error } = await supabase.functions.invoke('cors-test', {

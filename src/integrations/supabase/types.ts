@@ -9,6 +9,39 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      generations: {
+        Row: {
+          created_at: string
+          id: string
+          original_image_url: string
+          status: string
+          style: string
+          transformed_image_url: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          original_image_url: string
+          status: string
+          style: string
+          transformed_image_url?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          original_image_url?: string
+          status?: string
+          style?: string
+          transformed_image_url?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       short_urls: {
         Row: {
           clicks: number | null

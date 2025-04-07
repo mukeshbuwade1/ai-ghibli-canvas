@@ -1,15 +1,31 @@
+
 import { useUser } from "@/components/UserProvider";
 import { useToast } from "./use-toast";
 import { useNavigate } from "react-router-dom";
 import { checkTransformationStatus, getGenerationById, transformImage, uploadImage } from "@/lib/api";
 
-export const useGenerateImage=()=>{
+interface GenerateImageParams {
+  file: File | null;
+  previewUrl: string | null;
+  setIsTransforming: React.Dispatch<React.SetStateAction<boolean>>;
+  setGenerationId: React.Dispatch<React.SetStateAction<string | null>>;
+  setPredictionId: React.Dispatch<React.SetStateAction<string | null>>;
+  setTransformedImageUrl: React.Dispatch<React.SetStateAction<string | null>>;
+}
+
+export const useGenerateImage = () => {
     const { toast } = useToast();
     const { user } = useUser();
     const navigate = useNavigate();
 
-
-    const handleGenerate = async ({file,previewUrl,setIsTransforming,setGenerationId,setPredictionId,setTransformedImageUrl}) => {
+    const handleGenerate = async ({
+      file,
+      previewUrl,
+      setIsTransforming,
+      setGenerationId,
+      setPredictionId,
+      setTransformedImageUrl
+    }: GenerateImageParams) => {
         // Check if user is logged in first
         if (!user) {
           toast({
@@ -21,7 +37,7 @@ export const useGenerateImage=()=>{
           return;
         }
     
-        if (!previewUrl ) {
+        if (!previewUrl) {
           toast({
             title: "Missing information",
             description: "Please upload an image and select a style first.",
@@ -93,5 +109,5 @@ export const useGenerateImage=()=>{
         }
       };
     
-    return {handleGenerate}
-}
+    return { handleGenerate };
+};
