@@ -149,3 +149,24 @@ export const getUserGenerations = async (): Promise<Generation[]> => {
     return [];
   }
 };
+
+// New function to test the CORS functionality
+export const testCors = async (testData: any): Promise<{ message: string; receivedData: any } | null> => {
+  try {
+    const { data, error } = await supabase.functions.invoke('cors-test', {
+      method: 'POST',
+      body: testData
+    });
+    
+    if (error) throw error;
+    return data as { message: string; receivedData: any };
+  } catch (error: any) {
+    console.error('Error testing CORS:', error);
+    toast({
+      title: 'CORS test failed',
+      description: error.message || 'Error communicating with the server',
+      variant: 'destructive',
+    });
+    return null;
+  }
+};
