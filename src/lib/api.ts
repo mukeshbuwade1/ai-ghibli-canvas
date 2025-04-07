@@ -1,3 +1,4 @@
+
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 
@@ -126,7 +127,11 @@ export const getGenerationById = async (id: string): Promise<Generation | null> 
       .eq('id', id)
       .single();
       
-    if (error) throw error;
+    if (error) {
+      console.error('Error fetching generation:', error);
+      return null;
+    }
+    
     return data as Generation;
   } catch (error) {
     console.error('Error fetching generation:', error);
@@ -141,7 +146,11 @@ export const getUserGenerations = async (): Promise<Generation[]> => {
       .select('*')
       .order('created_at', { ascending: false });
       
-    if (error) throw error;
+    if (error) {
+      console.error('Error fetching user generations:', error);
+      return [];
+    }
+    
     return data as Generation[];
   } catch (error) {
     console.error('Error fetching user generations:', error);
